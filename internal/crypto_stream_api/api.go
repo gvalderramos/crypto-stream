@@ -1,16 +1,27 @@
 package crypto_stream_api
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
-// API struct to interact with different exchanges
-type API struct{}
-
-// NewAPI creates a new API instance
-func NewAPI() *API {
-	return &API{}
+type CryptoStreamEvent struct {
+	BrokerApi    string
+	Currency     string
+	CurrentPrice float32
+	LowPrice     float32
+	HightPrice   float32
 }
 
-// FetchPrices fetches price data from the given exchange
-func (api *API) FetchPrices(exchange string) string {
-	return fmt.Sprintf("Fetching prices from %s...", exchange)
+type Response interface {
+	ToCryptoStreamEvent() *CryptoStreamEvent
+}
+
+func (c *CryptoStreamEvent) String() ([]byte, error) {
+	res, err := json.Marshal(c)
+	if err != nil {
+		fmt.Println("Error while converting the event:", err)
+		return nil, err
+	}
+	return res, nil
 }

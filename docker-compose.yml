@@ -1,0 +1,53 @@
+services:
+  binance_watcher:
+    image: golang:latest
+    restart: on-failure
+    depends_on:
+      - event_mng
+    links: 
+      - event_mng
+    env_file:
+      - .env
+    volumes:
+      - ./bin:/app
+    command: 
+      - /app/binance_watcher
+    environment:
+      - EVENT_BROKER_HOST=event_mng
+  event_watcher:
+    image: golang:latest
+    restart: on-failure
+    depends_on:
+      - event_mng
+    links: 
+      - event_mng
+    command:
+      - /app/event_mng
+    env_file:
+      - .env
+    environment:
+      - EVENT_BROKER_HOST=event_mng
+    volumes:
+      - ./bin:/app
+  event_mng:
+    image: rabbitmq:3-management
+    container_name: event_mng
+    env_file:
+      - .env
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - EVENT_BROKER_HOST=localhost
+  cache:
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=guest
+      - POSTGRES_USER=guest
+      - POSTGRES_DB=crypto_stream
