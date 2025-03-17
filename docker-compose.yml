@@ -19,8 +19,10 @@ services:
     restart: on-failure
     depends_on:
       - event_mng
+      - database
     links: 
       - event_mng
+      - database
     command:
       - /app/event_mng
     env_file:
@@ -41,7 +43,7 @@ services:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
       - EVENT_BROKER_HOST=localhost
-  cache:
+  database:
     image: postgres:14-alpine
     ports:
       - 5432:5432

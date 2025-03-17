@@ -3,6 +3,8 @@
 CryptoStream is a **real-time cryptocurrency price monitoring and event-based processing system**.  
 It collects and processes market data from multiple exchanges using **Go** and an event-driven architecture.
 
+![Crypto Stream Architecture](https://github.com/gvalderramos/crypto-stream/blob/main/crypto_stream.png?raw=true)
+
 ## 🚀 Features
 - **Exchange Watchers**: Monitor real-time prices from Binance, CoinGecko, and Kraken.
 - **Event Management**: Handle and process crypto-related events.
@@ -22,8 +24,6 @@ crypto-stream/
 │   ├── kraken_watcher/
 │   │   ├── main.go
 │   ├── event_mng/
-│   │   ├── main.go
-│   ├── db_mng/
 │   │   ├── main.go
 │   ├── crypto_stream/
 │   │   ├── main.go
@@ -77,7 +77,6 @@ go run cmd/binance_watcher/main.go &
 go run cmd/coingecko_watcher/main.go &
 go run cmd/kraken_watcher/main.go &
 go run cmd/event_mng/main.go &
-go run cmd/db_mng/main.go &
 go run cmd/crypto_stream/main.go &
 ```
 
